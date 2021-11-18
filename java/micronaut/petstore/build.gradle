@@ -1,0 +1,67 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'io.kokuwa.micronaut:micronaut-openapi-codegen:2.2.1'
+    }
+}
+
+plugins {
+    id("com.github.johnrengelman.shadow") version "7.1.0"
+    id("io.micronaut.application") version "2.0.8"
+    id("org.openapi.generator") version "5.3.0"
+}
+
+version = "0.1"
+group = "com.zephyrok"
+
+repositories {
+    mavenCentral()
+}
+
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("com.zephyrok.*")
+    }
+}
+
+dependencies {
+    annotationProcessor "io.micronaut:micronaut-http-validation"
+    implementation "io.micronaut:micronaut-http-client"
+    implementation "io.micronaut:micronaut-runtime"
+    implementation "javax.annotation:javax.annotation-api"
+    implementation "javax.inject:javax.inject:1"
+    implementation "com.google.code.findbugs:jsr305:3.0.2"
+    implementation "io.reactivex.rxjava2:rxjava:2.2.21"
+    runtimeOnly "ch.qos.logback:logback-classic"
+    implementation "io.micronaut:micronaut-validation"
+    implementation("io.micronaut:micronaut-http-server-netty")
+}
+
+application {
+    mainClass.set("com.zephyrok.Application")
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion("11")
+    targetCompatibility = JavaVersion.toVersion("11")
+}
+
+openApiGenerate {
+    generatorName = "micronaut"
+    inputSpec = "$rootDir/specs/petstore.yaml".toString()
+    outputDir = "$buildDir/generated".toString()
+    apiPackage = "com.zephyrok.api"
+    invokerPackage = "com.zephyrok.invoker"
+    modelPackage = "com.zephyrok.model"
+    configOptions = [
+            supportAsync: "true"
+    ]
+}
+
+compileJava.dependsOn tasks.openApiGenerate
+sourceSets.main.java.srcDirs += "$buildDir/generated/generated-sources/openapi"
