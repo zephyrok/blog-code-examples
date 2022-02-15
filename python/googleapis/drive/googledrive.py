@@ -1,7 +1,7 @@
-from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from google.oauth2 import service_account
+
 
 def get_service(api_name, api_version, scopes, key_file_location):
     """Get a service that communicates to a Google API.
@@ -17,7 +17,7 @@ def get_service(api_name, api_version, scopes, key_file_location):
     """
 
     credentials = service_account.Credentials.from_service_account_file(
-    key_file_location)
+        key_file_location)
 
     scoped_credentials = credentials.with_scopes(scopes)
 
@@ -25,6 +25,7 @@ def get_service(api_name, api_version, scopes, key_file_location):
     service = build(api_name, api_version, credentials=scoped_credentials)
 
     return service
+
 
 def main():
     """Shows basic usage of the Drive v3 API.
@@ -57,6 +58,7 @@ def main():
     except HttpError as error:
         # TODO(developer) - Handle errors from drive API.
         print(f'An error occurred: {error}')
+
 
 if __name__ == '__main__':
     main()
