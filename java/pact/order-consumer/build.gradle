@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+    id "au.com.dius.pact" version "4.3.6"
+}
+
+group 'com.zephyrok'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
+    testImplementation 'org.json:json:20220320'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testImplementation 'au.com.dius.pact.consumer:junit5:4.3.7'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+pact {
+    publish {
+        pactBrokerUrl = 'http://localhost:9292/'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
