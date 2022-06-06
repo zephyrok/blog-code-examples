@@ -1,0 +1,5 @@
+pactbroker:
+  url: http://localhost:9292
+#  auth:
+#    username: user
+#    password: password
